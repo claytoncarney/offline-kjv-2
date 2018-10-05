@@ -1,0 +1,23 @@
+{
+  "name": "Offline KJV 2",
+  "short_name": "KJV 2",
+  "description": "Offline King James Bible Search 2",
+  "background_color": "white",
+  "dir": "ltr",
+  "display": "standalone",
+  "lang": "en-us",
+  "orientation": "any",
+  "scope": "./",
+  "start_url": "./",
+  "theme_color": "#3F51B5",
+  "icons": [
+    {
+      "src": "./icon/icon-192.png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./icon/icon-512.png",
+      "sizes": "512x512"
+    }
+  ]
+}

@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en" class="font-roboto">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Offline King James Bible Search App">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#3F51B5">
+  <title>Offline KJV 2</title>
+  <link rel="stylesheet" href="./css/kjv.css">
+  <link rel="stylesheet" href="./css/font.css">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" href="./icon/icon-32.png">
+  <script src="./js/sw-register.js" defer></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="pane-read hide">
+      <div class="page-read">
+        <div class="scroll-read">
+          <div class="list"></div>
+        </div>
+        <nav class="nav-read">
+          <button class="btn-contents" aria-label="Contents">
+            <span class="glyph"></span>
+          </button>
+          <button class="btn-bookmarks" aria-label="Bookmarks">
+            <span class="glyph"></span>
+          </button>
+          <button class="btn-search" aria-label="Search">
+            <span class="glyph"></span>
+          </button>
+          <button class="btn-help" aria-label="Help">
+            <span class="glyph"></span>
+          </button>
+          <button class="btn-columns-1" aria-label="Single Column">
+            <span class="glyph"></span>
+          </button>
+          <button class="btn-columns-2" aria-label="Double Column">
+            <span class="glyph"></span>
+          </button>
+          <button class="btn-columns-3" aria-label="Triple Column">
+            <span class="glyph"></span>
+          </button>
+        </nav>
+      </div>
+    </div>
+    <div class="pane-contents hide">
+      <div class="page-contents">
+        <div class="tools-contents">
+          <div class="banner-contents"></div>
+          <button class="btn-tomes" aria-label="Tomes">
+            <span class="glyph"></span>
+          </button>
+        </div>
+        <div class="scroll-contents">
+          <div class="book-list"></div>
+          <div class="chapter-list"></div>
+        </div>
+        <nav class="nav-contents">
+          <button class="btn-back" aria-label="Back">
+            <span class="glyph"></span>
+          </button>
+        </nav>
+      </div>
+      <div class="page-tomes hide">
+        <div class="tools-tomes">
+          <div class="banner-tomes">Tomes</div>
+        </div>
+        <div class="scroll-tomes">
+          <div class="list">
+            <button class="btn-tome" data-tome-name="KJV">KJV</button>
+            <button class="btn-tome" data-tome-name="Apocrypha">Apocrypha</button>
+          </div>
+        </div>
+        <nav class="nav-tomes">
+          <button class="btn-back" aria-label="Back">
+            <span class="glyph"></span>
+          </button>
+        </nav>
+      </div>
+    </div>
+    <div class="pane-bookmarks hide">
+      <div class="page-bookmarks">
+        <div class="tools-bookmarks">
+          <button class="btn-folders-add" aria-label="Add Folder">
+            <span class="glyph"></span>
+          </button>
+          <div class="banner-bookmarks"></div>
+          <button class="btn-folders" aria-label="Folders">
+            <span class="glyph"></span>
+          </button>
+        </div>
+        <div class="scroll-bookmarks">
+          <div class="empty">No bookmarks saved.</div>
+          <div class="list"></div>
+          <div class="action-menu hide">
+            <button class="btn-up" aria-label="Up">
+              <span class="glyph"></span>
+            </button>
+            <button class="btn-down" aria-label="Down">
+              <span class="glyph"></span>
+            </button>
+            <button class="btn-move-copy" aria-label="Move/Copy">
+              <span class="glyph"></span>
+            </button>
+            <button class="btn-delete" aria-label="Delete">
+              <span class="glyph"></span>
+            </button>
+            <button class="btn-cancel" aria-label="Cancel">
+              <span class="glyph"></span>
+            </button>
+          </div>
+        </div>
+        <nav class="nav-bookmarks">
+          <button class="btn-back" aria-label="Back">
+            <span class="glyph"></span>
+          </button>
+          <button class="btn-sort-ascend" aria-label="Sort Ascending">
+            <span class="glyph"></span>
+          </button>
+          <button class="btn-sort-descend" aria-label="Sort Descending">
+            <span class="glyph"></span>
+          </button>
+        </nav>
+      </div>
+      <div class="page-folders hide">
+        <div class="tools-folders">
+          <div class="banner-folders">Bookmarks Folders</div>
+        </div>
+        <div class="scroll-folders">
+          <div class="list"></div>
+          <div class="action-menu hide">
+            <button class="btn-up" aria-label="Up">
+              <span class="glyph"></span>
+            </button>
+            <button class="btn-down" aria-label="Down">
+              <span class="glyph"></span>
+            </button>
+            <button class="btn-edit" aria-label="Edit">
+              <span class="glyph"></span>
+            </button>
+            <button class="btn-delete" aria-label="Delete">
+              <span class="glyph"></span>
+            </button>
+            <button class="btn-cancel" aria-label="Cancel">
+              <span class="glyph"></span>
+            </button>
+          </div>
+        </div>
+        <nav class="nav-folders">
+          <button class="btn-back" aria-label="Back">
+            <span class="glyph"></span>
+          </button>
+        </nav>
+      </div>
+      <div class="page-folders-add hide">
+        <div class="tools-folders-add">
+          <div class="banner-folders-add">Add Bookmarks Folder</div>
+        </div>
+        <div class="scroll-folders-add">
+          <div class="input-container">
+            <label>Name:</label>
+            <input type="text" class="folder-name">
+          </div>
+          <div class="button-container">
+            <button class="dialog-save">Save</button>
+          </div>
+        </div>
+        <nav class="nav-folders-add">
+          <button class="btn-back" aria-label="Back">
+            <span class="glyph"></span>
+          </button>
+        </nav>
+      </div>
+      <div class="page-folders-rename hide">
+        <div class="tools-folders-rename">
+          <div class="banner-folders-rename"></div>
+        </div>
+        <div class="scroll-folders-rename">
+          <div class="input-container">
+            <label>New Name:</label>
+            <input type="text" class="new-name">
+          </div>
+          <div class="button-container">
+            <button class="dialog-save">Save</button>
+          </div>
+        </div>
+        <nav class="nav-folders-rename">
+          <button class="btn-back" aria-label="Back">
+            <span class="glyph"></span>
+          </button>
+        </nav>
+      </div>
+      <div class="page-folders-delete hide">
+        <div class="tools-folders-delete">
+          <div class="banner-folders-delete"></div>
+        </div>
+        <div class="scroll-folders-delete">
+          <div class="button-container">
+            <div class="delete-confirm">Confirm Delete</div>
+            <button class="dialog-delete">Delete</button>
+          </div>
+        </div>
+        <nav class="nav-folders-delete">
+          <button class="btn-back" aria-label="Back">
+            <span class="glyph"></span>
+          </button>
+        </nav>
+      </div>
+      <div class="page-move-copy hide">
+        <div class="tools-move-copy">
+          <div class="banner-move-copy"></div>
+        </div>
+        <div class="scroll-move-copy">
+          <div class="empty">No Target Folders.</div>
+          <div class="list"></div>
+          <div class="action-menu hide">
+            <button class="btn-move" aria-label="Move">
+              <span class="glyph"></span>
+            </button>
+            <button class="btn-copy" aria-label="Copy">
+              <span class="glyph"></span>
+            </button>
+            <button class="btn-cancel" aria-label="Cancel">
+              <span class="glyph"></span>
+            </button>
+          </div>
+        </div>
+        <nav class="nav-move-copy">
+          <button class="btn-back" aria-label="Back">
+            <span class="glyph"></span>
+          </button>
+        </nav>
+      </div>
+    </div>
+    <div class="pane-search hide">
+      <div class="page-results">
+        <div class="tools-results">
+          <button class="btn-filters" aria-label="Filters">
+            <span class="glyph"></span>
+          </button>
+          <div class="banner-results"></div>
+          <button class="btn-history" aria-label="History">
+            <span class="glyph"></span>
+          </button>
+        </div>
+        <div class="scroll-results">
+          <div class="list"></div>
+        </div>
+        <nav class="nav-results">
+          <button class="btn-back" aria-label="Back">
+            <span class="glyph"></span>
+          </button>
+          <span class="search-span">
+            <input class="search-input" type="text" aria-label="Search Expression">
+          </span>
+          <button class="btn-search-go" aria-label="Search Go">
+            <span class="glyph"></span>
+          </button>
+        </nav>
+      </div>
+      <div class="page-filters hide">
+        <div class="tools-filters">
+          <div class="banner-filters">Search Filters</div>
+        </div>
+        <div class="scroll-filters">
+          <div class="list"></div>
+        </div>
+        <nav class="nav-filters">
+          <button class="btn-back" aria-label="Back">
+            <span class="glyph"></span>
+          </button>
+        </nav>
+      </div>
+      <div class="page-history hide">
+        <div class="tools-history">
+          <div class="banner-history">Search History</div>
+        </div>
+        <div class="scroll-history">
+          <div class="empty">No searchs saved.</div>
+          <div class="list"></div>
+          <div class="action-menu hide">
+            <button class="btn-up" aria-label="Up">
+              <span class="glyph"></span>
+            </button>
+            <button class="btn-down" aria-label="Down">
+              <span class="glyph"></span>
+            </button>
+            <button class="btn-delete" aria-label="Delete">
+              <span class="glyph"></span>
+            </button>
+            <button class="btn-cancel" aria-label="Cancel">
+              <span class="glyph"></span>
+            </button>
+          </div>
+        </div>
+        <nav class="nav-history">
+          <button class="btn-back" aria-label="Back">
+            <span class="glyph"></span>
+          </button>
+        </nav>
+      </div>
+    </div>
+    <div class="pane-help hide">
+      <div class="page-help">
+        <div class="tools-help">
+          <button class="btn-settings" aria-label="Settings">
+            <span class="glyph"></span>
+          </button>
+          <div class="banner-help"></div>
+          <button class="btn-topics" aria-label="Topics">
+            <span class="glyph"></span>
+          </button>
+        </div>
+        <div class="scroll-help">
+          <div class="topic-about hide">
+            <h1>Offline KJV 2</h1>
+            <p>This application is dedicated to our Lord Jesus Christ, YAHUSHA HAMASHIACH.</p>
+            <p>"Heaven and earth shall pass away, but my words shall not pass away."</p>
+            <h1>Contact</h1>
+            <p>Questions or comments?&nbsp;
+              <a href="mailto:offline.kjv.2@gmail.com" rel="noopener" target="_top">Send Email</a>
+            </p>
+            <h1>Version</h1>
+            <p>2018.10</p>
+          </div>
+          <div class="topic-overview hide">
+            <h1>Design</h1>
+            <p>This is an Offline-First, Mobile-First application. Once downloaded, it provides full functionality, even when no internet connection is available.</p>
+            <p>It supports any Android, Windows, or Linux platform with the latest version of Google Chrome or Mozilla Firefox web browser.</p>
+            <p>On an Android platform, the best user experience is available using Chrome for Android. By selecting 'Add to Home screen', the application mimics a native Android app.</p>
+            <h1>Navigation And Glyphs</h1>
+            <p>The application uses five Panes: Read, Contents, Bookmarks, Search, and Help.</p>
+            <p>Each Pane has one or more Pages.</p>
+            <p>Use the Back button to return to the previous Pane/Page:</p>
+            <p>
+              <div class="entry-glyph">
+                <div class="glyph-description">Back</div>
+                <button class="btn-back" aria-label="Back">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+            </p>
+            <p>On smaller devices, only one Pane is visible at a time. Tap the desired Pane button to display that Pane. Tap the Back button to return to the Read Pane.</p>
+            <p>On larger devices, the Read Pane is always visible and a single sidebar displays either the Contents, Bookmarks, Search, or Help Pane. Tap the desired Pane button to display that Pane in the sidebar.</p>
+            <p>The Read Pane has a Navigation Bar at the bottom.</p>
+            <p>The Contents, Bookmarks, Search, and Help Panes have a Toolbar at the top and a Navigation Bar at the bottom. These provide context information and buttons to access other features.</p>
+            <h2>Read Page</h2>
+            <p>The following buttons provide access to the other Panes:</p>
+            <p>
+              <div class="entry-glyph">
+                <div class="glyph-description">Contents Pane</div>
+                <button class="btn-contents" aria-label="Contents">
+                  Genesis 1
+                </button>
+              </div>
+              <div class="entry-glyph">
+                <div class="glyph-description">Bookmarks Pane</div>
+                <button class="btn-bookmarks" aria-label="Bookmarks">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph">
+                <div class="glyph-description">Search Pane</div>
+                <button class="btn-search" aria-label="Search">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph">
+                <div class="glyph-description">Help Pane</div>
+                <button class="btn-help" aria-label="Help">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+            </p>
+            <p>As appropriate, the following buttons are also available:</p>
+            <p>
+              <div class="entry-glyph">
+                <div class="glyph-description">Single Column</div>
+                <button class="btn-columns-1" aria-label="Single Column">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph">
+                <div class="glyph-description">Double Column</div>
+                <button class="btn-columns-2"  aria-label="Double Column">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph">
+                <div class="glyph-description">Triple Column</div>
+                <button class="btn-columns-3" aria-label="Triple Column">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+            </p>
+            <h2>Contents Page</h2>
+            <p>The following button is available:</p>
+            <p>
+              <div class="entry-glyph">
+                <div class="glyph-description">Tomes Page</div>
+                <button class="btn-tomes" aria-label="Tomes">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+            </p>
+            <h2>Bookmarks Page</h2>
+            <p>The following buttons are available:</p>
+            <p>
+              <div class="entry-glyph">
+                <div class="glyph-description">Add Folder Page</div>
+                <button class="btn-folders-add" aria-label="Add Folder">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph">
+                <div class="glyph-description">Folders Page</div>
+                <button class="btn-folders" aria-label="Folders">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph">
+                <div class="glyph-description">Sort Ascending</div>
+                <button class="btn-sort-ascend" aria-label="Sort Ascending">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph">
+                <div class="glyph-description">Sort Descending</div>
+                <button class="btn-sort-descend" aria-label="Sort Descending">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+            </p>
+            <h2>Results Page</h2>
+            <p>The following buttons are available:</p>
+            <p>
+              <div class="entry-glyph">
+                <div class="glyph-description">Filters Page</div>
+                <button class="btn-filters" aria-label="Filters">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph">
+                <div class="glyph-description">History Page</div>
+                <button class="btn-history" aria-label="History">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph">
+                <div class="glyph-description">Search Go</div>
+                <button class="btn-search-go" aria-label="Search Go">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+            </p>
+            <h2>Filters Page</h2>
+            <p>The following buttons are available:</p>
+            <p>
+              <div class="entry-glyph">
+                <div class="glyph-description">Filter</div>
+                <button class="btn-filter" aria-label="Filter">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+            </p>
+            <h2>Help Page</h2>
+            <p>The following buttons are available:</p>
+            <p>
+              <div class="entry-glyph">
+                <div class="glyph-description">Settings Page</div>
+                <button class="btn-settings" aria-label="Settings">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph">
+                <div class="glyph-description">Topics Page</div>
+                <button class="btn-topics" aria-label="Topics">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+            </p>
+            <h2>Settings Page</h2>
+            <p>The following buttons are available:</p>
+            <p>
+              <div class="entry-glyph">
+                <div class="glyph-description">Previous</div>
+                <button class="btn-font-prev" aria-label="Previous">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph">
+                <div class="glyph-description">Next</div>
+                <button class="btn-font-next" aria-label="Next">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph">
+                <div class="glyph-description">Font Size</div>
+                <button class="btn-font-size font-size-m" aria-label="Medium">Aa</button>
+              </div>
+            </p>
+            <h2>More Information</h2>
+            <p>See the appropiate Help Topic for more details (Tap the Topics Page button in the Toolbar above).</p>
+            <h1>Action Menus</h1>
+            <p>The Bookmarks Page, Folders Page, and History Page provide for additional actions on individual entries via an Action Menu.</p>
+            <p>Tap the Menu button to open the Action Menu for that entry:</p>
+            <p>
+              <div class="entry-glyph">
+                <div class="glyph-description">Menu</div>
+                <button class="btn-menu" aria-label="menu">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+            </p>
+            <p>The following Actions are available (as appropriate):</p>
+            <p>
+              <div class="entry-glyph-action">
+                <div class="glyph-description">Cancel</div>
+                <button class="btn-cancel" aria-label="Cancel">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph-action">
+                <div class="glyph-description">Move Up</div>
+                <button class="btn-up" aria-label="Up">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph-action">
+                <div class="glyph-description">Move Down</div>
+                <button class="btn-down" aria-label="Down">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph-action">
+                <div class="glyph-description">Delete</div>
+                <button class="btn-delete" aria-label="Delete">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph-action">
+                <div class="glyph-description">Edit</div>
+                <button class="btn-edit" aria-label="Edit">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph-action">
+                <div class="glyph-description">Move/Copy</div>
+                <button class="btn-move-copy" aria-label="Move/Copy">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph-action">
+                <div class="glyph-description">Move</div>
+                <button class="btn-move" aria-label="Move">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+              <div class="entry-glyph-action">
+                <div class="glyph-description">Copy</div>
+                <button class="btn-copy" aria-label="Copy">
+                  <span class="glyph"></span>
+                </button>
+              </div>
+            </p>
+          </div>
+          <div class="topic-read hide">
+            <h1>Read Pane</h1>
+            <p>The Read Pane has one Page: Read.</p>
+            <h1>Read Page</h1>
+            <p>The Read Page presents a list of verses from the active Chapter of the active Tome.</p>
+            <p>The active Tome is set via the Tomes Page.</p>
+            <p>The active Chapter is set via the Contents Page, Bookmarks Page, or Results Page.</p>
+            <p>For more details, see the Contents, Bookmarks, and Search Help Topics.</p>
+            <p>Tap the Single, Double, or Triple Column button (if present) in the Navigation Bar to set the number of columns.</p>
+            <h2>Bookmarks</h2>
+            <p>Bookmarks in the active Folder for the active Chapter are highlighted on the Read Page.</p>
+            <p>Tap on a verse text to add/remove a Bookmark in the active Folder.</p>
+            <h2>Clipboard</h2>
+            <p>Tap a verse number to copy that verse to the system clipboard. </p>
+          </div>
+          <div class="topic-contents hide">
+            <h1>Contents Pane</h1>
+            <p>The Contents Pane has two Pages: Contents (default) and Tomes.</p>
+            <p>From the Contents Pane you select the active Tome and active Chapter.</p>
+            <h1>Contents Page</h1>
+            <p>The Contents Page Toolbar displays the name of the active Tome.</p>
+            <p>The Contents Page presents the Book list for the active Tome.</p>
+            <p>Tap a Book name to display the Chapter list of that Book. Tap a Chapter number to set the active Chapter. The Read Page is opened at the active Chapter.</p>
+            <h1>Tomes Page</h1>
+            <p>Tap the Tomes button in the Contents Page Toolbar to open the Tomes Page.</p>
+            <p>The Tomes Page presents the Tome list.</p>
+            <p>Tap a Tome name to set the active Tome. The Contents Page is opened with the Book list of the active Tome.</p>
+            <p>Tap the Back button to return to the Contents Page.</p>
+          </div>
+          <div class="topic-bookmarks hide">
+            <h1>Bookmarks Pane</h1>
+            <p>The Bookmarks Pane has six Pages: Bookmarks (default), Add Folder, Folders, Move/Copy, Rename Folder, and Delete Folder.</p>
+            <h2>Bookmarks Folders</h2>
+            <p>A set of Folders is maintained for each Tome. This facilitates grouping of Bookmarks for various purposes.</p>
+            <p>The active Folder set is selected when the active Tome is set.</p>
+            <h1>Bookmarks Page</h1>
+            <p>The Bookmarks Page Toolbar displays the name of the active Folder.</p>
+            <p>The Bookmarks Page presents the Bookmarks list for the active Folder.</p>
+            <p>Tap a Bookmark to open the Read Page at the selected verse.</p>
+            <p>Bookmarks are managed via their Action Menu. Tap the Menu button to open the Action Menu. You may reorder, move/copy, or delete Bookmarks as desired.</p>
+            <p>Tap the Sort Ascending or Sort Descending button in the Navigation Bar to sort Bookmarks in the active Folder.</p>
+            <h1>Add Folder Page</h1>
+            <p>Tap the Add Folder button in the Bookmarks Page Toolbar to open the Add Folder Page.</p>
+            <p>Enter a Folder name and tap the Save button to add a new Folder to the active Tome Folder set. The active Folder is set to the new Folder and the Bookmarks Page is opened.</p>
+            <p>To cancel, tap the Back button to return to the Bookmarks Page.</p>
+            <h1>Folders Page</h1>
+            <p>Tap the Folders button in the Bookmarks Page Toolbar to open the Folders Page.</p>
+            <p>The Folders Page presents the Folders list for the active Tome.</p>
+            <p>Tap a Folder name to set the active Folder and open the Bookmarks Page.</p>
+            <p>Folders are managed via their Action Menu. Tap the Menu button to open the Action Menu. You may reorder, rename, or delete Folders as desired.</p>
+            <p>To cancel, tap the Back button to return to the Bookmarks Page.</p>
+            <h1>Move/Copy Page</h1>
+            <p>Tap the Move/Copy button from a Bookmarks Page Action Menu to open the Move/Copy Page.</p>
+            <p>The Move/Copy Page presents the Folders list for the active Tome which do not contain the selected Bookmark.</p>
+            <p>Move/Copy operations for each Folder are managed via their Action Menu. Tap the Menu button to open the Action Menu. You may move and/or copy the selected Bookmark to the selected Folder.</p>
+            <p>To cancel, tap the Back button to return to the Bookmarks Page.</p>
+            <h1>Rename Folder Page</h1>
+            <p>Tap the Edit button from a Folders Page Action Menu to open the Rename Folder Page.</p>
+            <p>Edit the Folder name and tap the Save button to rename the Folder and return to the Folders Page.</p>
+            <p>To cancel, tap the Back button to return to the Folders Page.</p>
+            <h1>Delete Folder Page</h1>
+            <p>Tap the Delete button from a Folders Page Action Menu to open the Delete Folder Page.</p>
+            <p>Tap the Delete button to confirm Folder deletion and return to the Folders Page. The active Folder is reset to the next available Folder.</p>
+            <p>To cancel, tap the Back button to return to the Folders Page.</p>
+          </div>
+          <div class="topic-search hide">
+            <h1>Search Pane</h1>
+            <p>The Search Pane has three Pages: Results (default), Filters, and History.</p>
+            <h2>Search Expressions</h2>
+            <p>Searches are performed on individual verses. Two search expression types are available: Word or Phrase.</p>
+            <p>Word search expressions are specified by a single word or a comma separated list of words. Search results will list all verses which contain all search words.</p>
+            <p>For example, "forgive,sin" will find all verses that contain both "forgive" and "sin".</p>
+            <p>Phrase search expressions are specified by a word phrase. Search results will list all verses contain that word phrase.</p>
+            <p>For example, "son of man" will find all verses that contain the phrase "son of man".</p>
+            <h2>Wildcards</h2>
+            <p>Individual words in both Word and Phrase search expressions may contain an optional wildcard character (*) to find variants of a word.</p>
+            <p>For example, "lord*" will find all occurrences of "lord", "lords", "lord's", "lordly", or "lordship".</p>
+            <h2>Case Sensitivity</h2>
+            <p>To perform a case sensitive search, prepend an at sign (&#64;) to the search expression.</p>
+            <p>For example, "@LORD*" will find all occurrences of "LORD" and "LORD'S", but not "lord", "lords", "lord's", "lordly", "lordship", "Lord", or "Lord's".</p>
+            <h2>Performing Searches</h2>
+            <p>Tap the Search Pane button to open the Results Page.</p>
+            <p>Enter a Search Expression in the field at the bottom. Tap the Search Go button or press Enter to set the active Search Expression. The Results Page is opened, presenting results for the active Search Expression.</p>
+            <h1>Results Page</h1>
+            <p>The Results Page Toolbar displays the active Filter and occurrences/verses count.</p>
+            <p>The Results Page presents a list of verses matching the active Filter in the active Tome. Tap a verse in the list to open the Read Page at that verse.</p>
+            <h1>Filters Page</h1>
+            <p>Tap the Filters button in the Results Page Toolbar to open the Filters Page.</p>
+            <p>The Filters Page presents a list of occurrences/verses grouped by Tome, Book, or Chapter. Tap on a Tome/Book entry to expand or collapse subentries.</p>
+            <p>Tap a Filter button to set the active Filter. The Results Page is opened, presenting only matches for the active Filter.</p>
+            <p>To cancel, tap the Back button to return to the Results Page.</p>
+            <h1>History Page</h1>
+            <p>Tap the History button in the Results Page Toolbar to open the History Page.</p>
+            <p>The History Page presents a list of previous search expressions. Tap an entry to set the active Search Expression. The Results Page is opened, presenting results for the active Search Expression.</p>
+            <p>History entries are managed via their Action Menu. Tap the Menu button to open the Action Menu. You may reorder or delete history entries as desired.</p>
+            <p>To cancel, tap the Back button to return to the Results Page.</p>
+          </div>
+          <div class="topic-help hide">
+            <h1>Help Pane</h1>
+            <p>The Help Pane has three Pages: Help (default), Settings, and Topics.</p>
+            <h1>Help Page</h1>
+            <p>The Help Page Toolbar displays the name of the active Help Topic.</p>
+            <p>The Help Page presents help information for the active Help Topic.</p>
+            <h1>Settings Page</h1>
+            <p>Tap the Settings button in Help Page Toolbar to open the Settings Page.</p>
+            <p>The Settings Page presents a list of user application Settings.</p>
+            <p>Tap the associated Next/Prev buttons to set the active Font and active Theme.</p>
+            <p>Tap a Font Size button to set the active Font Size.</p>
+            <p>Tap the Back button to return to the Help Page.</p>
+            <h1>Topics Page</h1>
+            <p>Tap the Topics button in Help Page Toolbar to open the Topics Page.</p>
+            <p>The Topics Page presents a list of Help Topics.</p>
+            <p>Tap a Topic name to set the active Topic and open the Help Page.</p>
+            <p>Tap the Back button to return to the Help Page.</p>
+          </div>
+          <div class="topic-king hide">
+            <div class="king">That's MY KING!</div>
+            <div class="king">That's MY KING!</div>
+            <div class="king">That's MY KING!</div>
+            <div class="king">That's MY KING!</div>
+            <div class="king">That's MY KING!</div>
+            <br>
+            <div class="king">My King was born King...</div>
+            <div class="king">He's the King of the Jews...</div>
+            <div class="king">He's the King of Israel...</div>
+            <div class="king">He's the King of Righteousness...</div>
+            <div class="king">He's the King of the Ages...</div>
+            <div class="king">He's the King of Heaven...</div>
+            <div class="king">He's the King of Glory...</div>
+            <div class="king">He's the King of Kings...</div>
+            <div class="king">and He is the Lord of Lords!</div>
+            <br>
+            <div class="king">He's Enduringly Strong...</div>
+            <div class="king">He's Entirely Sincere...</div>
+            <div class="king">He's Eternally Steadfast...</div>
+            <div class="king">He's Immortally Graceful...</div>
+            <div class="king">He's Imperially Powerful...</div>
+            <div class="king">He's Impartially Merciful...</div>
+            <div class="king">now that's MY KING!</div>
+            <br>
+            <div class="king">Well...</div>
+            <div class="king">I wonder...</div>
+            <div class="king">IF YOU KNOW HIM?</div>
+            <div class="king">DO YOU KNOW HIM?</div>
+            <div class="king">Don't try to mislead me...</div>
+            <div class="king">DO YOU KNOW MY KING?</div>
+            <br>
+            <div class="king">David said,</div>
+            <div class="king">The Heavens declare the glory of God,</div>
+            <div class="king">and the firmament showeth</div>
+            <div class="king">His handiwork.</div>
+            <div class="king">No means of measure can define</div>
+            <div class="king">His limitless love.</div>
+            <div class="king">No far-seeing telescope</div>
+            <div class="king">can bring into visibility</div>
+            <div class="king">the coastline of His shoreless supply.</div>
+            <div class="king">No barriers can hinder Him from</div>
+            <div class="king">pouring out His blessing.</div>
+            <br>
+            <div class="king">He's God's Son...</div>
+            <div class="king">He's a Sinner's Saviour...</div>
+            <div class="king">He's the Centerpiece of Civilization...</div>
+            <div class="king">He Stands Alone in Himself...</div>
+            <div class="king">He's August...</div>
+            <div class="king">He's Unique...</div>
+            <div class="king">He's Unparalleled...</div>
+            <div class="king">He's Unprecedented...</div>
+            <div class="king">He's Supreme...</div>
+            <div class="king">He's Pre-eminent.</div>
+            <br>
+            <div class="king">Why...</div>
+            <div class="king">He's the Loftiest Idea</div>
+            <div class="king">in Literature...</div>
+            <div class="king">He's the Highest Personality</div>
+            <div class="king">in Philosophy...</div>
+            <div class="king">He's the Supreme Problem</div>
+            <div class="king">in Higher Criticism...</div>
+            <div class="king">He's the Fundamental Doctrine</div>
+            <div class="king">of True Theology...</div>
+            <div class="king">He's the Cardinal Necessity</div>
+            <div class="king">of Spiritual Religion.</div>
+            <div class="king">THAT'S MY KING!</div>
+            <div class="king">THAT'S MY KING!</div>
+            <br>
+            <div class="king">He was wounded for our transgressions,</div>
+            <div class="king">crushed for our iniquities;</div>
+            <div class="king">by His stripes we are healed.</div>
+            <br>
+            <div class="king">He supplies strength for the weak...</div>
+            <div class="king">He's available for the tempted</div>
+            <div class="king">and the tried...</div>
+            <div class="king">He sympathizes and He saves...</div>
+            <div class="king">He guards and He guides...</div>
+            <div class="king">He heals the sick...</div>
+            <div class="king">He cleansed the lepers...</div>
+            <div class="king">He forgives sinners...</div>
+            <div class="king">He discharges debtors...</div>
+            <div class="king">He delivers the captives...</div>
+            <div class="king">He defends the feeble...</div>
+            <div class="king">He blesses the young...</div>
+            <div class="king">He serves the unfortunate...</div>
+            <div class="king">He regards the aged...</div>
+            <div class="king">He rewards the diligent...</div>
+            <div class="king">and He beautifies the meek.</div>
+            <br>
+            <div class="king">Well!</div>
+            <div class="king">My KING...</div>
+            <div class="king">Is the Key of Knowledge...</div>
+            <div class="king">He's the Wellspring of Wisdom...</div>
+            <div class="king">He's the Doorway of Deliverance...</div>
+            <div class="king">He's the Pathway of Peace...</div>
+            <div class="king">He's the Roadway of Righteousness...</div>
+            <div class="king">He's the Highway of Holiness...</div>
+            <div class="king">He's the Gateway of Glory.</div>
+            <br>
+            <div class="king">Well!</div>
+            <div class="king">My KING...</div>
+            <div class="king">He's the Master of the Mighty...</div>
+            <div class="king">He's the Captain of the Conquerors...</div>
+            <div class="king">He's the Head of the Heroes...</div>
+            <div class="king">He's the Leader of the Legislators...</div>
+            <div class="king">He's the Overseer of the Overcomers...</div>
+            <div class="king">He's the Governor of Governors...</div>
+            <div class="king">He's the Prince of Princes...</div>
+            <div class="king">He's the King of Kings...</div>
+            <div class="king">and He's the Lord of Lords.</div>
+            <div class="king">THAT'S MY KING!</div>
+            <br>
+            <div class="king">His office is manifold...</div>
+            <div class="king">His promise is sure...</div>
+            <div class="king">His life is matchless...</div>
+            <div class="king">His goodness is limitless...</div>
+            <div class="king">His mercy is everlasting...</div>
+            <div class="king">His love never changes...</div>
+            <div class="king">His word is enough...</div>
+            <div class="king">His grace is sufficient...</div>
+            <div class="king">His reign is righteous...</div>
+            <div class="king">His yoke is easy,</div>
+            <div class="king">and His burden is light!</div>
+            <br>
+            <div class="king">Well!</div>
+            <div class="king">I wish I could describe Him to you...</div>
+            <div class="king">but He's...</div>
+            <div class="king">HE'S INDESCRIBABLE!</div>
+            <div class="king">HE'S INDESCRIBABLE!</div>
+            <div class="king">Yeah!</div>
+            <br>
+            <div class="king">He's...</div>
+            <div class="king">He's incomprehensible...</div>
+            <div class="king">He's invincible...</div>
+            <div class="king">He's irresistible...</div>
+            <div class="king">I'm trying to tell You...</div>
+            <div class="king">The heavens of heavens</div>
+            <div class="king">can not contain Him...</div>
+            <div class="king">Let alone a man</div>
+            <div class="king">explain Him...</div>
+            <div class="king">You can't get Him</div>
+            <div class="king">out of your mind...</div>
+            <div class="king">You can't get Him</div>
+            <div class="king">off of your hand...</div>
+            <div class="king">You can't outlive Him...</div>
+            <div class="king">and You can't live without Him!</div>
+            <br>
+            <div class="king">Well!</div>
+            <div class="king">The Pharisees couldn't stand Him...</div>
+            <div class="king">But they found out </div>
+            <div class="king">they couldn't stop Him!</div>
+            <div class="king">Pilate couldn't find</div>
+            <div class="king">any fault in Him...</div>
+            <div class="king">The witnesses couldn't get their</div>
+            <div class="king">testimonies to agree...</div>
+            <div class="king">Herod couldn't kill Him...</div>
+            <div class="king">Death couldn't handle Him...</div>
+            <div class="king">and the Grave couldn't hold Him!</div>
+            <div class="king">THAT'S MY KING!</div>
+            <div class="king">YEAH!</div>
+            <br>
+            <div class="king">He always has been...</div>
+            <div class="king">and He always will be...</div>
+            <div class="king">I'm talking 'bout...</div>
+            <div class="king">He had no predecessor...</div>
+            <div class="king">and He'll have no successor...</div>
+            <div class="king">There was nobody before Him...</div>
+            <div class="king">and there'll be nobody after Him...</div>
+            <div class="king">You can't impeach Him...</div>
+            <div class="king">and He's not gonna to resign!</div>
+            <div class="king">THAT'S MY KING!</div>
+            <br>
+            <div class="king">Thine...</div>
+            <div class="king">Thine is the Kingdom...</div>
+            <div class="king">and the power...</div>
+            <div class="king">and the glory!</div>
+            <div class="king">All the power belongs to My King!</div>
+            <div class="king">The glory is all His.</div>
+            <div class="king">YEAH!</div>
+            <br>
+            <div class="king">Thine is the Kingdom...</div>
+            <div class="king">and the power...</div>
+            <div class="king">and the glory...</div>
+            <div class="king">Forever...</div>
+            <div class="king">and ever...</div>
+            <div class="king">and ever...</div>
+            <div class="king">How long is that?</div>
+            <div class="king">and ever...</div>
+            <div class="king">and ever...</div>
+            <div class="king">and ever...</div>
+            <div class="king">and ever...</div>
+            <div class="king">and when You get through with</div>
+            <div class="king">all of the forevers...</div>
+            <div class="king">Then AMEN!</div>
+            <br>
+            <div class="king">Excerpts from sermons by<br>S. M. Lockridge</div>
+            <div class="king"><a href="https://www.youtube.com/watch?v=D2gsZV54kDw" rel=”noreferrer”>That's MY KING!</a> on YouTube</div>
+          </div>
+        </div>
+        <nav class="nav-help">
+          <button class="btn-back" aria-label="Back">
+            <span class="glyph"></span>
+          </button>
+        </nav>
+      </div>
+      <div class="page-topics hide">
+        <div class="tools-topics">
+          <div class="banner-topics">Help Topics</div>
+        </div>
+        <div class="scroll-topics">
+          <div class="list">
+            <button class="btn-topic">About</button>
+            <button class="btn-topic">Overview</button>
+            <button class="btn-topic">Read</button>
+            <button class="btn-topic">Contents</button>
+            <button class="btn-topic">Bookmarks</button>
+            <button class="btn-topic">Search</button>
+            <button class="btn-topic">Help</button>
+            <button class="btn-topic">That's MY KING!</button>
+          </div>
+        </div>
+        <nav class="nav-topics">
+          <button class="btn-back" aria-label="Back">
+            <span class="glyph"></span>
+          </button>
+        </nav>
+      </div>
+      <div class="page-settings hide">
+        <div class="tools-settings">
+          <div class="banner-settings">Settings</div>
+        </div>
+        <div class="scroll-settings">
+          <h1>Font</h1>
+          <div class="nav-font">
+            <button class="btn-font-prev" aria-label="Previous">
+              <span class="glyph"></span>
+            </button>
+            <div class="font-name">Font</div>
+            <button class="btn-font-next" aria-label="Next">
+              <span class="glyph"></span>
+            </button>
+          </div>
+          <h1>Font Size</h1>
+          <div class="nav-font-size">
+            <button class="btn-font-size font-size-s" data-size="font-size-s" aria-label="Small">Aa</button>
+            <button class="btn-font-size font-size-m" data-size="font-size-m" aria-label="Medium">Aa</button>
+            <button class="btn-font-size font-size-l" data-size="font-size-l" aria-label="Large">Aa</button>
+            <button class="btn-font-size font-size-xl" data-size="font-size-xl" aria-label="Extra Large">Aa</button>
+            <button class="btn-font-size font-size-xxl" data-size="font-size-xxl" aria-label="Extra Extra Large">Aa</button>
+          </div>
+          <h1>Theme</h1>
+          <div class="nav-theme">
+            <button class="btn-theme-prev" aria-label="Previous">
+              <span class="glyph"></span>
+            </button>
+            <div class="theme-name">Theme</div>
+            <button class="btn-theme-next" aria-label="Next">
+              <span class="glyph"></span>
+            </button>
+          </div>
+          <div class="font-sample">
+            <p>
+              <span class="ref">Psalms 119:1</span>
+              <span class="acrostic">א ALEPH.</span>Blessed are the undefiled in the way, who walk in the law of the LORD.</p>
+            <p>
+              <span class="ref">John 21:25</span>And there are also many other things which Jesus did, the which, if they should be written every one, I suppose that even the world itself could not contain the books that should be written. Amen.</p>
+          </div>
+        </div>
+        <nav class="nav-settings">
+          <button class="btn-back" aria-label="Back">
+            <span class="glyph"></span>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <input class="bin-copy" readonly="readonly" aria-label="clipboard">
+  <!-- <script type="module" src="./js/App.js"></script> -->
+  <script src="./bundle.js"></script>
+</body>
+
+</html>
