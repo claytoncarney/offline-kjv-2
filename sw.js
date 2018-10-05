@@ -1,5 +1,5 @@
 let appCaches = [{
-  name: 'kjv-2-core-20181004.001',
+  name: 'kjv-2-core-20181005.001',
   urls: [
     './',
     './index.html',
