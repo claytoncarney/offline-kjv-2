@@ -158,7 +158,7 @@ button::-moz-focus-inner {
 
 .btn-contents {
   color: var(--nav-color);
-  flex: 0 0 calc(320px - 3 * var(--target-size));
+  flex: 0 0 calc(320px - var(--target-size) * 3);
 }
 
 .btn-filter {
