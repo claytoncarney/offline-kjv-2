@@ -35,6 +35,9 @@ class AppModel {
     } else {
       sidebar = JSON.parse(value);
     }
+    if (this.panes === 1 && sidebar !== 'none') {
+      sidebar = 'none';
+    }
     this.sidebarChange(sidebar);
   }
 

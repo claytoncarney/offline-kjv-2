@@ -134,7 +134,7 @@ class PageFilters {
       }
       this.activeFilterBtn = this.list.querySelector(
         `button[data-book-idx="${this.searchFilter.bookIdx}"]` +
-        `[data-chapter-idx="${this.searchFilter.chapterIdx}"`
+        `[data-chapter-idx="${this.searchFilter.chapterIdx}"]`
       );
       if (this.activeFilterBtn) {
         activate(this.activeFilterBtn);

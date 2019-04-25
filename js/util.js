@@ -11,6 +11,9 @@ export function centerScrollElement(scrollElement, element) {
 }
 
 export function deactivate(element) {
+  if (!element) {
+    return;
+  }
   element.classList.remove('active');
 }
 
