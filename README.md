@@ -1,7 +1,7 @@
 ## Offline KJV 2
 An Offline KJV Bible Search Application for Android (also Windows and Linux).
 
-This application is dedicated to our Lord Jesus Christ, YAHUSHA HAMASHIACH.
+This application is dedicated to our Lord Jesus Christ.
 
 "Heaven and earth shall pass away, but my words shall not pass away."
 
